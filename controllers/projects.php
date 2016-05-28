@@ -56,6 +56,14 @@ class Projects extends Controller{
 		$this->ReturnView($viewmodel->changeProjectName(),true);
 	}
 
+	protected function changeProjectDesc(){
+		if(!isset($_SESSION['is_logged_in'])){
+			header('Location: '.ROOT_URL.'users/login');
+		}
+		$viewmodel = new ProjectModel();
+		$this->ReturnView($viewmodel->changeProjectDesc(),true);
+	}
+
 
 
 
