@@ -22,8 +22,11 @@
     <div class="form-group" >
       <label>Typ</label><br>
       <label class="checkbox-inline"><input type="checkbox" name="type1" value="Drzewo" checked>Drzewo</label>
-      <label class="checkbox-inline"><input type="checkbox" name="type2" value="Bylina">Bylina</label>
-      <label class="checkbox-inline"><input type="checkbox" name="type3" value="Kwiat">Kwiat</label>
+      <label class="checkbox-inline"><input type="checkbox" name="type2" value="Krzew">Krzew</label>
+      <label class="checkbox-inline"><input type="checkbox" name="type3" value="Krzewinka">Krzewinka</label>
+      <label class="checkbox-inline"><input type="checkbox" name="type4" value="Roślina jednoroczna">Roślina jednoroczna</label>
+      <label class="checkbox-inline"><input type="checkbox" name="type5" value="Roślina dwuletnia">Roślina dwuletnia</label>
+      <label class="checkbox-inline"><input type="checkbox" name="type6" value="Bylina">Bylina</label>
     </div>
 
      <div class="form-group" >

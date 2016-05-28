@@ -25,6 +25,7 @@
 
 	<a class="btn btn-blue btn-share" id="query_button" href="<?php echo ROOT_URL; ?>projects/addPosition">Dodaj nową pozycję</a>
 	<a class="btn btn-blue btn-share" id="query_button" href="<?php echo ROOT_URL; ?>projects/changeProjectName">Zmień nazwę</a>
+	<a class="btn btn-blue btn-share" id="query_button" href="<?php echo ROOT_URL; ?>projects/changeProjectDesc">Zmień opis</a>
 	<a class="btn btn-red btn-share" id="query_button" href="<?php echo ROOT_URL; ?>projects/index">Powrót</a>
 
 	</div>

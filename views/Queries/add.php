@@ -36,9 +36,12 @@
             <label>Typ</label>
             <select name="type" class="form-control">
               <option value="Drzewo">Drzewo</option>
+              <option value="Krzew">Krzew</option>
+              <option value="Krzewinka">Krzewinka</option>
+              <option value="Roślina jednoroczna">Roślina jednoroczna</option>
+              <option value="Roślina dwuletnia">Roślina dwuletnia</option>
               <option value="Bylina">Bylina</option>
-              <option value="Kwiat">Kwiat</option>
-            </select>
+           </select>
           </div>
 
           <div class="form-group" >
