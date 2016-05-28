@@ -1,0 +1,129 @@
+
+	.btn-share{
+		margin-bottom:20px;
+	}
+  
+   /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    
+    html {
+	  position: relative;
+	  min-height: 100%;
+	}
+	body {
+	  /* Margin bottom by footer height */
+	  margin-bottom: 60px;
+	}
+	.footer {
+	  position: absolute;
+	  bottom: 0;
+	  width: 100%;
+	  /* Set the fixed height of the footer here */
+	  height: 60px;
+	}
+
+	
+
+	
+
+
+	/* Greater height for large resolution */
+	@media(min-width:1500px){
+		.row.content {
+			height: 900px;		
+		}
+	}
+	@media(min-width:2500px){
+		.row.content {
+			height: 1195px;		
+		}
+	}
+
+
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 30px;
+      background-color: #f1f1f1;
+      height: 100% !important;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+      height: 60px;
+      text-align: center;
+      }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+	
+	
+	img {
+		width:100%;
+		height: auto;
+		max-height: 900px;
+		float: center;
+	}
+	
+	#wrap {
+	  min-height: 100%;
+	  height: auto;
+	  /* Negative indent footer by its height */
+	  margin: 0 auto -0px;
+	  /* Pad bottom by footer height */
+	  padding: 0 0 0px;
+	}
+
+
+	table {
+	    border-collapse: collapse;
+	    width: 100%;
+	}
+
+	th, td {
+	    text-align: left;
+	    vertical-align: top;
+	    padding: 8px;
+	}
+
+	tr:nth-child(even){background-color: #f2f2f2}
+
+	th {
+	    background-color: #4CAF50;
+	    color: white;
+	}
+
+	#query_button {
+		margin-right: 100px;
+		margin-left: 100px;
+
+	}
+
+	img#plantImg {
+		max-width: 50px;
+	
+    }
+
+	#googleMap {
+    width: 100%; /* Span the entire width of the screen */
+    height: 400px; /* Set the height to 400 pixels */
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); /* Change the color of the map to black and white * /
+
+
+    
+
+	
