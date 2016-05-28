@@ -130,26 +130,20 @@ class ProjectModel extends Model{
 	}
 
 	public function addPosition(){
-		// Sanitize POST
+				// Sanitize POST
 		$post=filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
 		if($post['addSubmit']){
 
-			// Duplicate check
-			$this->query("SELECT * FROM Project_has_gatunek WHERE phg_GatunekNazwaPL = :gatunekNazwaPL AND phg_ProjectID = $_SESSION[active_projectID]");
-			$this->bind(':gatunekNazwaPL',$post['insertedNazwa']);	
-			$rowAlreadyExists=$this->single();
-			if($rowAlreadyExists){
-				Messages::setMsg('Position already exists.','error');
-				return;
-			}
-
 			// Insert into MySQL
+
 			$this->query('INSERT INTO Project_has_gatunek (phg_GatunekNazwaPL, phg_ProjectID) VALUES (:gatunekNazwaPL,'.$_SESSION['active_projectID'].')');
 
 			$this->bind(':gatunekNazwaPL',$post['insertedNazwa']);	
 
 			$this->execute();
+
+			// return $this->errorCode();		
 
 			// Verify
 			if($this->errorCode()==00000){
@@ -163,9 +157,48 @@ class ProjectModel extends Model{
 			
 		}
 
-		// Database browse function
-		require(dirname(__FILE__)."/../sharedFunctions/browse.php");
-		return $rows;
+
+		if($post['searchSubmit']){
+
+			if($post['type1']=='' AND $post['type2']=='' AND $post['type3']==''){
+			Messages::setMsg('Please Fill In Type','error');
+			return;
+			}
+
+			$type = 'GatunekTyp = :type1 OR GatunekTyp = :type2 OR GatunekTyp = :type3 ';
+			$strefa = 'AND WHERE GatunekStrefa = :strefa ';
+			$ekspozycja = 'AND WHERE GatunekEkspozycja = :ekspozycja ';
+
+
+			// Browse
+			$this->query('SELECT * FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM Gatunek WHERE GatunekNazwaPL LIKE :namePL) AS polskie WHERE GatunekNazwaLAT LIKE :nameLAT) AS lacinskie  WHERE GatunekTyp = :type1 OR GatunekTyp = :type2 OR GatunekTyp = :type3) AS typy WHERE GatunekStrefa LIKE :strefa) AS strefy WHERE '.(empty($post['ekspozycja'])? "" : "GatunekEkspozycja = :ekspozycja AND ").'GatunekRozmiar < :rozmiar ORDER BY GatunekNazwaPL '.$post['order']);
+
+			$this->bind(':namePL','%'.$post['namePL'].'%');
+			$this->bind(':nameLAT','%'.$post['nameLAT'].'%');
+
+			$this->bind(':strefa','%'.$post['strefa'].'%');
+
+			if($post['ekspozycja']!=''){
+				$this->bind(':ekspozycja',$post['ekspozycja']);
+			}
+
+
+			$this->bind(':rozmiar',$post['size']);
+				
+
+
+
+			$this->bind(':type1',$post['type1']);
+			$this->bind(':type2',$post['type2']);
+			$this->bind(':type3',$post['type3']);
+
+			// Messages::setMsg($this->stmt->debugDumpParams(),'error');
+		
+
+			$rows=$this->resultSet();
+			return $rows;
+		}
+		
 
 	}
 
@@ -179,39 +212,6 @@ class ProjectModel extends Model{
 
 			$this->query("UPDATE Project SET ProjectName = :newName WHERE ProjectID = $_SESSION[active_projectID]");
 			$this->bind(':newName',$post['projectNewName']);
-			$this->execute();
-
-			// return $this->errorCode();		
-
-			// Verify
-			if($this->errorCode()==00000){
-				//Redirect
-				Messages::setMsg('Zmieniono','success');
-
-				unset($_SESSION['active_projectName']);
-				$_SESSION['active_projectName'] = $post['projectNewName'];
-
-				header('Location:'.ROOT_URL.'projects/edit');
-			}
-			else{
-				Messages::setMsg('Error encountered, error number: '.$this->errorCode(),'error');
-			}
-			
-		}
-		return ;
-		
-	}
-
-	public function changeProjectDesc(){
-
-		$post=filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-		if($post['submit']){
-
-			// Insert into MySQL
-
-			$this->query("UPDATE Project SET ProjectDescription = :newDesc WHERE ProjectID = $_SESSION[active_projectID]");
-			$this->bind(':newDesc',$post['projectNewDesc']);
 			$this->execute();
 
 			// return $this->errorCode();		

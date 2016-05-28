@@ -36,16 +36,6 @@ class QueryModel extends Model{
 
 		if($post['submit']){
 
-			// Duplicate check
-			$this->query("SELECT * FROM Gatunek WHERE GatunekNazwaPL = :namePL OR GatunekNazwaLAT = :nameLAT");
-			$this->bind(':namePL',$post['namePL']);
-			$this->bind(':nameLAT',$post['nameLAT']);
-			$rowAlreadyExists=$this->single();
-			if($rowAlreadyExists){
-				Messages::setMsg('Position already exists.','error');
-				return;
-			}
-
 			$imgUrl=$this->upload($post);
 
 			if($post['namePL']==''){
@@ -81,9 +71,49 @@ class QueryModel extends Model{
 
 
 	public function browse(){
+		// Sanitize POST
+		$post=filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-		require(dirname(__FILE__)."/../sharedFunctions/browse.php");
-		return $rows;
+		if($post['searchSubmit']){
+
+			if($post['type1']=='' AND $post['type2']=='' AND $post['type3']==''){
+			Messages::setMsg('Please Fill In Type','error');
+			return;
+			}
+
+			$type = 'GatunekTyp = :type1 OR GatunekTyp = :type2 OR GatunekTyp = :type3 ';
+			$strefa = 'AND WHERE GatunekStrefa = :strefa ';
+			$ekspozycja = 'AND WHERE GatunekEkspozycja = :ekspozycja ';
+
+
+			// Browse
+			$this->query('SELECT * FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM Gatunek WHERE GatunekNazwaPL LIKE :namePL) AS polskie WHERE GatunekNazwaLAT LIKE :nameLAT) AS lacinskie  WHERE GatunekTyp = :type1 OR GatunekTyp = :type2 OR GatunekTyp = :type3) AS typy WHERE GatunekStrefa LIKE :strefa) AS strefy WHERE '.(empty($post['ekspozycja'])? "" : "GatunekEkspozycja = :ekspozycja AND ").'GatunekRozmiar < :rozmiar ORDER BY GatunekNazwaPL '.$post['order']);
+
+			$this->bind(':namePL','%'.$post['namePL'].'%');
+			$this->bind(':nameLAT','%'.$post['nameLAT'].'%');
+
+			$this->bind(':strefa','%'.$post['strefa'].'%');
+
+			if($post['ekspozycja']!=''){
+				$this->bind(':ekspozycja',$post['ekspozycja']);
+			}
+
+
+			$this->bind(':rozmiar',$post['size']);
+				
+
+
+
+			$this->bind(':type1',$post['type1']);
+			$this->bind(':type2',$post['type2']);
+			$this->bind(':type3',$post['type3']);
+
+			// Messages::setMsg($this->stmt->debugDumpParams(),'error');
+		
+
+			$rows=$this->resultSet();
+			return $rows;
+		}
 	}
 
 	public function upload($post){
